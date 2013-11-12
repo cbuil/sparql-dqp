@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DQPResourceConfig>
+    
+  <dataResources>
+    <resource url="http://tempuri.org/dai/services"
+              resourceID="Resource"
+              drerID="DRER" 
+              dsis="DSIS" 
+              dsos="DSOS" 
+              isLocal="false"/>
+              
+    <resource url="http://tempuri.net/dai/services"
+              resourceID="Resource"
+              alias="Aliased" 
+              isLocal="false" />
+  </dataResources>
+  
+  <evaluationNodes>
+    <node url="http://localuri.org/dai/services"
+          drerID="DRER" 
+          dsis="DSIS" 
+          dsos="DSOS" 
+          isLocal="true" />
+
+    <node url="http://remoteuri.org/dai/services"
+          isLocal="false" />
+  </evaluationNodes>
+  
+</DQPResourceConfig>

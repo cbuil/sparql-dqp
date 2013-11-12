@@ -1,0 +1,10 @@
+digraph simpleDotFile {
+node [shape=Mrecord,fontsize=10];
+0	[label="{{}|{defaultDatasetebdabacaaabbfef.v = ''}|{SELECT (1549876026) 1000\nnull\nnull}}"];
+0	->	1;
+1	[label="{{}|{[defaultDataset.x, defaultDataset.v]\n[defaultDatasetdcedabaebdcfec.x, \ldefaultDatasetebdabacaaabbfef.v]}|{RENAME (1937214519) 1000\nnull\nnull}}"];
+1	->	2;
+2	[label="{{}|{[0] defaultDataset.x\l[1] defaultDataset.v\l}|{PROJECT (764848666) 1000\nnull\nnull}}"];
+2	->	3;
+3	[label="{{}|{RDF_DATABASE_SCAN (2121902167) 1000\nnull\nDataNode [service=null, resource=resourceID, alias=defaultDataset]}}"];
+}

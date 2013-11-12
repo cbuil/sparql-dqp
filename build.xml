@@ -1,0 +1,143 @@
+<project name="SPARQL-DQP 1.1" default="make-sparqldqp" xmlns:ivy="antlib:org.apache.ivy.ant">
+
+	<!-- property files -->
+	<property file="build.properties" />
+
+	<!-- project local classpath -->
+	<path id="local.classpath">
+		<pathelement location="${bin}" />
+	</path>
+
+	<!-- CLASSPATH -->
+	<path id="project.classpath">
+		<fileset dir="${ogsadai_libs}">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${lib}">
+			<include name="**/*.jar" />
+		</fileset>
+		<!--
+		<fileset dir="${thirdparty_libs}">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${axis_libs}">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${extra_libs}">
+					<include name="**/*.jar" />
+				</fileset>
+		<pathelement path="." />
+		-->
+	</path>
+
+	<!-- clean up the bin directory -->
+	<target name="clean-code" description="Cleans up the bin directory">
+		<mkdir dir="${bin}" />
+		<mkdir dir="${build}" />
+		<delete includeemptydirs="true">
+			<fileset dir="${bin}" includes="**/*" />
+		</delete>
+		<delete includeemptydirs="true">
+			<fileset dir="${build}" includes="**/*" />
+		</delete>
+	</target>
+
+	<!-- compile the ANTLR grammar -->
+	<target name="generate-grammar-code" description="Compiles and generates the code for the antlr grammar">
+		<classpath refid="project.classpath" />
+		<antlr target="grammar/Sparql.g" outputdirectory="${grammar_src_dst}" />
+	</target>
+
+	<target name="antlr">
+		<java classname="org.antlr.Tool" fork="true" failonerror="true">
+			<classpath refid="project.classpath" />
+			<arg value="-verbose"/>
+			<arg value="-make"/>
+			<arg value="-o"/>
+			<arg path="${grammar_src_dst}"/>
+			<arg path="grammar/${grammar_name}" />
+		</java>
+	</target>
+
+	<!-- clean up the bin directory -->
+	<target name="clean-all" description="Cleans up the bin directory">
+		<mkdir dir="${bin}" />
+		<mkdir dir="${build}" />
+		<delete includeemptydirs="true">
+			<fileset dir="${bin}" includes="**/*" />
+		</delete>
+		<delete includeemptydirs="true">
+			<fileset dir="${build}" includes="**/*" />
+		</delete>
+	</target>
+
+	<!-- build initial bin directory -->
+	<target name="init" description="Creates bin directory for compiled files">
+		<tstamp />
+	</target>
+
+	<!--find a better way to pass in the java version -->
+	<target name="compile" depends="init,antlr" description="Compiles all source code">
+		<javac includeantruntime="false" srcdir="${src}" destdir="${bin}" verbose="false" listfiles="false" deprecation="false" debug="true" fork="true" classpathref="project.classpath">
+
+		</javac>
+
+		<copy todir="${bin}">
+			<fileset dir="${basedir}">
+				<include name="log4j.properties" />
+			</fileset>
+		</copy>
+	</target>
+
+	<!-- build activity .jar file -->
+	<target name="make-sparqldqp" depends="compile">
+
+		<echo message="Building ${sparqldqp_jar_name} file to ${build} directory" />
+		<mkdir dir="${build}" />
+		<jar destfile="${build}/${sparqldqp_jar_name}" basedir="${bin}" update="false" includes="es/upm/fi/dia/oeg/ogsadai/sparql/**">
+		</jar>
+
+	</target>
+
+	<target name="make-tests" depends="compile">
+
+		<echo message="Building ${sparqldqp_test_jar_name} file to ${build} directory" />
+		<mkdir dir="${build}" />
+		<jar destfile="${build}/${sparqldqp_test_jar_name}" basedir="${bin}" update="false" includes="es/upm/fi/dia/oeg/ogsadai/test/**">
+		</jar>
+
+	</target>
+
+	<target name="run-query-client" depends="compile" description="Run RDFQueryClient...">
+		<java classname="Query2Test" fork="true">
+			<classpath refid="project.classpath" />
+			<classpath refid="${lib}" />
+			<!--jvmarg value="-Dlog4j.configuration=file:${log4j.location}"/-->
+		</java>
+	</target>
+
+	<target name="deploy-to-server" depends="make-sparqldqp" description="Deploy SPARQL_DQP in server 3080...">
+		<copy todir="${deploy_dir}">
+			<fileset dir="${build}">
+				<include name="**/*.jar" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="deploy-to-server-linux" depends="make-sparqldqp" description="Deploy SPARQL_DQP in server 3080...">
+		<copy todir="${deploy_dir_linux}">
+			<fileset dir="${build}">
+				<include name="**/*.jar" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="deploy-tests-linux" depends="make-tests" description="Deploy SPARQL_DQP in server 3080...">
+		<copy todir="${TESTS_LIB_DIR}">
+			<fileset dir="${build}">
+				<include name="**/*.jar" />
+			</fileset>
+		</copy>
+	</target>
+
+</project>

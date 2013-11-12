@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+    <bean id="uk.org.ogsadai.CORE_VERSION"  class="java.lang.String">
+        <constructor-arg value="4.2"/>
+    </bean>
+    <bean id="uk.org.ogsadai.PRESENTATION_VERSION"  class="java.lang.String">
+        <constructor-arg value="OGSA-DAI 4.2 Jersey 1.10"/>
+    </bean>
+    <bean id="uk.org.ogsadai.DataSinkService.name" class="java.lang.String">
+        <constructor-arg value="services/DataSinkService"/>
+    </bean>
+    <bean id="uk.org.ogsadai.DataSourceService.name" class="java.lang.String">
+        <constructor-arg value="services/DataSourceService"/>
+    </bean>
+    <bean id="uk.org.ogsadai.DataRequestExecutionService.name" class="java.lang.String">
+        <constructor-arg value="services/DataRequestExecutionService"/>
+    </bean>
+    <bean id="uk.org.ogsadai.DataResourceInformationService.name" class="java.lang.String">
+        <constructor-arg value="services/DataResourceInformationService"/>
+    </bean>
+    <bean id="uk.org.ogsadai.SessionManagementService.name" class="java.lang.String">
+        <constructor-arg value="services/SessionManagementService"/>
+    </bean>
+    <bean id="uk.org.ogsadai.RequestManagementService.name" class="java.lang.String">
+        <constructor-arg value="services/RequestManagementService"/>
+    </bean>
+    <bean id="uk.org.ogsadai.REST_PATH"  class="java.lang.String">
+        <constructor-arg value="rest"/>
+    </bean>
+
+
+    <!--
+    <bean id="uk.org.ogsadai.WEB_SERVER_URL"  class="java.lang.String">
+        <constructor-arg value="http://myhost:9120/dai"/>
+    </bean>
+    -->
+    <!--
+    <bean id="uk.org.ogsadai.MONITORING_FRAMEWORK" 
+          class="uk.org.ogsadai.monitoring.activity.ActivityProgressMonitoringFramework"/>
+    -->
+    <!--
+    <bean id="uk.org.ogsadai.MONITORING_FRAMEWORK" 
+          class="uk.org.ogsadai.monitoring.example.EventListMonitoringFramework"/>
+    -->
+    <!--
+    <bean id="uk.org.ogsadai.TraceManager"
+          class="uk.org.ogsadai.trace.TraceManager">
+      <property name="traceDirectory" value="TraceLog"/>
+      <property
+         name="dotExecutable"
+         value="PATH_TO_DOT_EXECUTABLE"/>
+    </bean> 
+    -->
+    <bean id="uk.org.ogsadai.dqp.FUNCTION_REPOSITORY_CONFIG"
+          class="uk.org.ogsadai.resource.dataresource.dqp.FunctionRepositoryConfig">
+      <property name="config" value="dqp/DQPFunctionsConfig.txt"/>
+    </bean>
+    
+    <!-- SPARQL-DQP-BEANS -->
+    <bean id="defaultDataset"  class="java.lang.String">
+        <constructor-arg value="http://127.0.0.1:2020/default"/>
+    </bean>
+
+
+    <!-- OPTIONAL-GT-BEANS
+    <bean id="uk.org.ogsadai.resource.authorizer"
+          class="uk.org.ogsadai.authorization.SimpleResourceAuthorizer">
+      <constructor-arg><ref bean="uk.org.ogsadai.RESOURCE_MANAGER"/></constructor-arg>
+    </bean>
+    OPTIONAL-GT-BEANS -->
+
+</beans>

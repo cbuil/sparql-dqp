@@ -1,0 +1,2 @@
+uk.org.ogsadai.dqp.lqp.udf.aggregate.Count
+es.upm.fi.dia.oeg.ogsadai.sparql.lqp.udf.FunctionRegex

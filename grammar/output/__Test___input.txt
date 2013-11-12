@@ -1,0 +1,7 @@
+prefix : <http://example.org/> 
+select ?s where {
+  ?s :endpoint ?o
+    SERVICE <http//jhiiief> {
+      ?s2 :p1 ?o2
+ }
+}
