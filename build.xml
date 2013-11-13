@@ -116,7 +116,7 @@
 		</java>
 	</target>
 
-	<target name="deploy-to-server" depends="make-sparqldqp" description="Deploy SPARQL_DQP in server 3080...">
+	<target name="deploy-to-server" depends="make-sparqldqp" description="Deploy SPARQL_DQP in Apache Tomcat...">
 		<copy todir="${deploy_dir}">
 			<fileset dir="${build}">
 				<include name="**/*.jar" />
@@ -124,15 +124,7 @@
 		</copy>
 	</target>
 
-	<target name="deploy-to-server-linux" depends="make-sparqldqp" description="Deploy SPARQL_DQP in server 3080...">
-		<copy todir="${deploy_dir_linux}">
-			<fileset dir="${build}">
-				<include name="**/*.jar" />
-			</fileset>
-		</copy>
-	</target>
-
-	<target name="deploy-tests-linux" depends="make-tests" description="Deploy SPARQL_DQP in server 3080...">
+	<target name="deploy-tests-linux" depends="make-tests" description="Deploy SPARQL_DQP in Apache Tomcat...">
 		<copy todir="${TESTS_LIB_DIR}">
 			<fileset dir="${build}">
 				<include name="**/*.jar" />
