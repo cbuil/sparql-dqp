@@ -1,0 +1,14 @@
+id=RDFResource
+type=uk.org.ogsadai.DATA_RESOURCE
+creationTime=null
+terminationTime=null
+PROPERTIES
+END
+CONFIG
+rdf.resource.rdfdataurl=http://dbpedia.org/sparql
+END
+ACTIVITIES
+es.upm.fi.dia.oeg.EPRQueryActivity=es.upm.fi.dia.oeg.EPRQueryActivity
+es.upm.fi.dia.oeg.RDFDBQueryActivity=es.upm.fi.dia.oeg.RDFDBQueryActivity
+END
+dataResourceClass=es.upm.fi.dia.oeg.ogsadai.rdfresource.RDFResource

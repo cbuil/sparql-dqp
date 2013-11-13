@@ -1,0 +1,11 @@
+id=uk.org.ogsadai.DATA_SOURCE_RESOURCE
+type=uk.org.ogsadai.DATA_SOURCE_RESOURCE
+creationTime=null
+terminationTime=null
+PROPERTIES
+END
+CONFIG
+END
+ACTIVITIES
+uk.org.ogsadai.WriteToDataSource=uk.org.ogsadai.WriteToDataSource
+END

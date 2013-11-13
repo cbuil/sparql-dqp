@@ -1,0 +1,15 @@
+id=uk.org.ogsadai.VIEW_RESOURCE_TEMPLATE
+type=uk.org.ogsadai.DATA_RESOURCE
+creationTime=null
+terminationTime=null
+PROPERTIES
+END
+CONFIG
+views.parent.resource.id=RELATIONAL-RESOURCE-ID
+views.definition.file.path=views/uk.org.ogsadai.VIEW_RESOURCE_TEMPLATE_config.txt
+END
+ACTIVITIES
+uk.org.ogsadai.SQLQuery=uk.org.ogsadai.SQLViewQuery
+uk.org.ogsadai.ExtractTableSchema=uk.org.ogsadai.ViewSchema
+END
+dataResourceClass=uk.org.ogsadai.resource.dataresource.views.ViewResource

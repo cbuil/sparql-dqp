@@ -1,0 +1,11 @@
+id=uk.org.ogsadai.DATA_SINK_RESOURCE
+type=uk.org.ogsadai.DATA_SINK_RESOURCE
+creationTime=null
+terminationTime=null
+PROPERTIES
+END
+CONFIG
+END
+ACTIVITIES
+uk.org.ogsadai.ReadFromDataSink=uk.org.ogsadai.ReadFromDataSink
+END

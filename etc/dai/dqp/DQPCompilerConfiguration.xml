@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+       
+  <bean id="cardinalityEstimator" 
+        class="uk.org.ogsadai.dqp.lqp.cardinality.SimpleCardinalityEstimator"/>  
+  
+  <!-- **************************
+        Compiler Configuration 
+       ************************** -->
+       
+  <bean id="compilerConfiguration"
+        class="uk.org.ogsadai.resource.dataresource.dqp.SimpleCompilerConfiguration">
+
+    <!--
+        This section specifies the chain of optimisers that will rewrite the
+        query plan. Optimisers will be chained in the specification order.
+    -->
+    <property name="optimisationChain">
+        <list>
+	  <bean class="uk.org.ogsadai.dqp.lqp.optimiser.visualise.VisualiseOptimiser">
+	            <property name="writeHeading" value="false"/>
+	            <property name="dotFilename" value="/home/cbuil/tools/DistributedSparql/servers/queryPlans/REQUESTID.dot"/>
+	            <property name="command" value="/usr/bin/dot -Tpng -q /home/cbuil/tools/DistributedSparql/servers/queryPlans/REQUESTID.dot -o /home/cbuil/tools/DistributedSparql/servers/queryPlans/REQUESTID.png"/>
+			</bean>
+            <!--bean class="es.upm.fi.dia.oeg.ogsadai.sparql.lqp.optimiser.WellDesignedRule1Optimiser" /-->
+            <!--bean class="es.upm.fi.dia.oeg.ogsadai.sparql.lqp.optimiser.WellDesignedRule2Optimiser" /-->
+            <!--bean class="es.upm.fi.dia.oeg.ogsadai.sparql.lqp.optimiser.WellDesignedRule3Optimiser" /-->
+	        <bean class="uk.org.ogsadai.dqp.lqp.optimiser.decorrelate.DecorrelationOptimiser" />
+	        <bean class="uk.org.ogsadai.dqp.lqp.optimiser.select.SelectPushDownOptimiser" />
+	        <bean class="uk.org.ogsadai.dqp.lqp.optimiser.rename.RenamePullUpOptimiser" />
+	        <bean class="uk.org.ogsadai.dqp.lqp.optimiser.project.ProjectPullUpOptimiser" />
+	        <bean class="uk.org.ogsadai.dqp.lqp.optimiser.join.JoinOrderingOptimiser">
+	           <property name="cardinalityEstimator" ref="cardinalityEstimator" />
+	        </bean>
+	        <bean class="uk.org.ogsadai.dqp.lqp.optimiser.join.JoinAnnotation" />
+	        <bean class="uk.org.ogsadai.dqp.lqp.optimiser.project.groupby.InsertProjectAfterGroupByOptimiser" />
+	        <bean class="uk.org.ogsadai.dqp.lqp.optimiser.project.pushdown.ProjectPushDownOptimiser" />
+	        <bean class="uk.org.ogsadai.dqp.lqp.optimiser.project.redundant.RemoveRedundantProjectOptimiser" />
+	        <bean class="uk.org.ogsadai.dqp.lqp.optimiser.partitioner.PartitioningOptimiser" />
+		<!--
+	        <bean class="uk.org.ogsadai.dqp.lqp.optimiser.implosion.TableScanImplosionOptimiser"/>
+		-->
+		<bean class="uk.org.ogsadai.dqp.lqp.optimiser.join.FilteredTableScanOptimiser">
+	            <property name="properties">
+	                <props>
+	                   <prop key="bigtable.min.size">1000</prop>
+	                   <prop key="table.size.ratio">10</prop>
+	                   <prop key="table.to.filter">Resource4_faculty</prop>
+	               </props>
+	            </property>    
+	        </bean>
+		<bean class="uk.org.ogsadai.dqp.lqp.optimiser.visualise.VisualiseOptimiser">
+	            <property name="writeHeading" value="false"/>
+	            <property name="dotFilename" value="/home/cbuil/tools/DistributedSparql/servers/queryPlans/REQUESTID_OPT.dot"/>
+	            <property name="command" value="/usr/bin/dot -Tpng -q /home/cbuil/tools/DistributedSparql/servers/queryPlans/REQUESTID_OPT.dot -o /home/cbuil/tools/DistributedSparql/servers/queryPlans/REQUESTID_OPT.png"/>
+			</bean>
+        </list>
+    </property>
+    
+    <!--
+        Each operator appearing in the logical query plan must have an
+        associated builder class. This section defines mapping between an
+        operator and a builder.
+    -->
+    <property name="operatorBuilders">
+        <map>
+	        <entry key="DUPLICATE_ELIMINATION">
+	            <map> <entry key="DEFAULT"> <bean class="uk.org.ogsadai.dqp.execute.workflow.DuplicateEliminationBuilder" /> </entry> </map>
+	        </entry>
+	        <entry key="DIFFERENCE">
+	            <map> <entry key="DEFAULT"> <bean class="uk.org.ogsadai.dqp.execute.workflow.DifferenceBuilder"/> </entry> </map>
+	        </entry>
+	        <entry key="PULL_EXCHANGE_CONSUMER">
+	            <map><entry key="DEFAULT"> <bean class="uk.org.ogsadai.dqp.execute.workflow.PullExchangeConsumerBuilder"/></entry></map>
+	        </entry>
+            <entry key="PULL_EXCHANGE_PRODUCER">
+                <map> <entry key="DEFAULT"> <bean class="uk.org.ogsadai.dqp.execute.workflow.PullExchangeProducerBuilder"/></entry></map>
+            </entry>
+            <entry key="PUSH_EXCHANGE_CONSUMER">
+                <map> <entry key="DEFAULT"> <bean class="uk.org.ogsadai.dqp.execute.workflow.PushExchangeConsumerBuilder"/></entry></map>
+            </entry>
+            <entry key="PUSH_EXCHANGE_PRODUCER">
+                <map> <entry key="DEFAULT"> <bean class="uk.org.ogsadai.dqp.execute.workflow.PushExchangeProducerBuilder"/></entry></map>
+            </entry>
+	        <entry key="GROUP_BY">
+	            <map><entry key="DEFAULT"> <bean class="uk.org.ogsadai.dqp.execute.workflow.GroupByBuilder"/></entry></map>
+	        </entry>
+	        <entry key="INNER_THETA_JOIN">
+	            <map>
+	                <entry key="DEFAULT"> <bean class="uk.org.ogsadai.dqp.execute.workflow.ProductSelectBuilder" /> </entry>
+	                <entry key="PRIMARY_EXPRESSION"> <bean class="uk.org.ogsadai.dqp.execute.workflow.ThetaJoinBuilder"/> </entry>
+	            </map>
+	        </entry>
+	        <entry key="LEFT_OUTER_JOIN">
+    	        <map><entry key="DEFAULT"> <bean class="uk.org.ogsadai.dqp.execute.workflow.LeftOuterJoinBuilder"/></entry></map>
+	        </entry>
+	        <entry key="NIL">
+	           <map><entry key="DEFAULT"> <bean class="uk.org.ogsadai.dqp.execute.workflow.NilBuilder"/></entry></map>
+	        </entry>
+            <entry key="ONE_ROW_ONLY">
+                <map><entry key="DEFAULT"> <bean class="uk.org.ogsadai.dqp.execute.workflow.OneRowOnlyBuilder"/></entry></map>
+            </entry>
+            <entry key="PRODUCT">
+                <map><entry key="DEFAULT"> <bean class="uk.org.ogsadai.dqp.execute.workflow.ProductBuilder"/></entry></map>
+            </entry>
+	        <entry key="PROJECT">
+	           <map><entry key="DEFAULT"> <bean class="uk.org.ogsadai.dqp.execute.workflow.ProjectBuilder"/></entry></map>
+	        </entry>
+	        <entry key="QUERY_APPLY">
+	            <map><entry key="DEFAULT"> <bean class="uk.org.ogsadai.dqp.execute.workflow.QueryApplyBuilder"/></entry></map>
+	        </entry>
+	        <entry key="RENAME">
+    	        <map><entry key="DEFAULT"> <bean class="uk.org.ogsadai.dqp.execute.workflow.RenameBuilder"/></entry></map>
+	        </entry>
+	        <entry key="SCALAR_GROUP_BY">
+	           <map><entry key="DEFAULT"> <bean class="uk.org.ogsadai.dqp.execute.workflow.ScalarGroupByBuilder"/></entry></map>
+	        </entry>
+	        <entry key="SELECT">
+	            <map><entry key="DEFAULT"> <bean class="uk.org.ogsadai.dqp.execute.workflow.SelectBuilder"/></entry></map>
+	        </entry>
+	        <entry key="SEMI_JOIN">
+	            <map><entry key="DEFAULT"> <bean class="uk.org.ogsadai.dqp.execute.workflow.SemiJoinBuilder"/></entry></map>
+	        </entry>
+	        <entry key="ANTI_SEMI_JOIN">
+    	        <map><entry key="DEFAULT"> <bean class="uk.org.ogsadai.dqp.execute.workflow.AntiJoinBuilder"/></entry></map>
+	        </entry>
+	        <entry key="SORT">
+	           <map><entry key="DEFAULT"> <bean class="uk.org.ogsadai.dqp.execute.workflow.SortBuilder"/></entry></map>
+	        </entry>
+	        <entry key="TABLE_SCAN">
+	            <map><entry key="DEFAULT"> <bean class="uk.org.ogsadai.dqp.execute.workflow.TableScanBuilder"/></entry></map>
+	        </entry>
+	        <entry key="FILTERED_TABLE_SCAN">
+	            <map><entry key="DEFAULT"> <bean class="uk.org.ogsadai.dqp.execute.workflow.FilteredTableScanBuilder"/></entry></map>
+	        </entry>
+	        <entry key="UNION">
+	            <map><entry key="DEFAULT"> <bean class="uk.org.ogsadai.dqp.execute.workflow.UnionBuilder"/></entry></map>
+	        </entry>
+	        <entry key="SCAN_BIND_APPLY">
+	           <map><entry key="DEFAULT"> <bean class="uk.org.ogsadai.dqp.execute.workflow.ScanBindApplyBuilder"/></entry></map>
+	        </entry>
+		<entry key="SPARQL_UNION">
+	           <map><entry key="DEFAULT"> <bean class="es.upm.fi.dia.oeg.ogsadai.sparql.lqp.operators.SparqlUnionBuilder"/></entry></map>
+	        </entry>
+		<entry key="RDF_SERVICE_SCAN">
+	           <map><entry key="DEFAULT"> <bean class="es.upm.fi.dia.oeg.ogsadai.sparql.lqp.operators.RDFServiceScanBuilder"/></entry></map>
+	        </entry>
+		<entry key="RDF_SERVICE_SCAN_VAR">
+	           <map><entry key="DEFAULT"> <bean class="es.upm.fi.dia.oeg.ogsadai.sparql.lqp.operators.RDFVarServiceScanBuilder"/></entry></map>
+	        </entry>
+		<entry key="RDF_DATABASE_SCAN">
+	           <map><entry key="DEFAULT"> <bean class="es.upm.fi.dia.oeg.ogsadai.sparql.lqp.operators.RDFDatabaseScanBuilder"/></entry></map>
+	        </entry>
+		<entry key="FUSION_TABLE_SCAN">
+	           <map><entry key="DEFAULT"> <bean class="es.upm.fi.dia.oeg.ogsadai.sparql.lqp.operators.FusionTableScanBuilder"/></entry></map>
+	        </entry>
+		<entry key="SPARQL_APPLY">
+	            <map><entry key="DEFAULT"> <bean class="es.upm.fi.dia.oeg.ogsadai.sparql.lqp.operators.ServiceVarApplyBuilder"/></entry></map>
+	        </entry>
+		<entry key="RDF_EMPTY_SET_SCAN">
+	            <map><entry key="DEFAULT"> <bean class="es.upm.fi.dia.oeg.ogsadai.sparql.lqp.operators.RDFEmptySetBuilder"/></entry></map>
+	        </entry>
+        </map>
+    </property>
+    
+    <!--
+       This object builds a logical query plan from a user query.
+    -->
+    <!--
+    <property name="queryPlanBuilder">
+       <bean class="uk.org.ogsadai.dqp.execute.SQLQueryPlanBuilder"/>
+    </property>
+    -->
+     <!--
+       This object builds a logical query plan from a SPARQL user query.
+    -->
+    <property name="queryPlanBuilder">
+       <bean class="es.upm.fi.dia.oeg.ogsadai.sparql.federation.SPARQLQueryPlanBuilder"/>
+    </property>
+    <!--
+        Table scan query factory element specifies a class implementing the
+        TableScanQueryFactory interface.  Objects of this class are used to
+        create the TableScanQuery objects that respresent a query within a
+        table scan operator.  Supporting in plug-in factory decouples the 
+        concrete type of the TableScanQuery object from the table scan operator. 
+        This allows alternative (possibly more sophisticated) implosion 
+        optimisers to be written that require more functionality from the
+        concrete implementation of the TableScanQuery object.
+    -->
+    <property name="tableScanQueryFactory">
+        <bean class="uk.org.ogsadai.dqp.lqp.operators.SimpleSelectProjectJoinTableScanQueryFactory" />
+    </property>
+    
+    <!--
+        Cardinality estimator property specifies an object implementing the
+        CardinalityEstimator interface. It may be used by optimisers to get 
+        estimates of cardinalities of intermediate relations in the query plan.
+    -->
+    <property name="cardinalityEstimator" ref="cardinalityEstimator"/>
+    
+    <!--
+        Function operators specify mapping of relation valued functions
+        (functions that appear in the FROM_LIST of the query statement) to
+        operator functions.
+    -->
+    <property name="functionOperators">
+	   <map value-type="java.lang.Class">
+	       <entry key="outerUnion"><value>uk.org.ogsadai.dqp.lqp.operators.extra.OuterUnionOperator</value></entry>
+	   </map>
+    </property>
+  
+    <!--
+        Coordinator extensions are used to perform some processing after
+        partitions are created. Extension code can be executed before and/or
+        after the workflow is submitted for execution by the coordinator. This
+        extensibility can be used for example to gather post execution
+        monitoring data.
+    -->
+    <!-- 
+    <property name="coordinatorExtensions">
+        <list>
+            <bean class="" />
+            <bean class="" />
+        </list>
+    </property>
+    -->
+       
+  </bean> <!-- Compiler configuration -->
+  
+</beans>

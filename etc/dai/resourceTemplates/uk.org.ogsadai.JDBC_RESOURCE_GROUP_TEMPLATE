@@ -1,0 +1,13 @@
+id=uk.org.ogsadai.JDBC_RESOURCE_GROUP_TEMPLATE
+type=uk.org.ogsadai.DATA_RESOURCE
+creationTime=null
+terminationTime=null
+PROPERTIES
+END
+CONFIG
+END
+ACTIVITIES
+uk.org.ogsadai.SQLBag=uk.org.ogsadai.SQLBag
+uk.org.ogsadai.SQLResilient=uk.org.ogsadai.SQLResilient
+END
+dataResourceClass=uk.org.ogsadai.resource.dataresource.group.ResourceGroupDataResource

@@ -1,0 +1,14 @@
+id=uk.org.ogsadai.DATA_RESOURCE
+type=uk.org.ogsadai.DATA_RESOURCE
+creationTime=null
+terminationTime=null
+PROPERTIES
+END
+CONFIG
+END
+ACTIVITIES
+uk.org.ogsadai.GetAvailableTables=uk.org.ogsadai.GetAvailableTablesDQP
+uk.org.ogsadai.ExtractTableSchema=uk.org.ogsadai.ExtractTableSchemaDQP
+uk.org.ogsadai.SQLQuery=uk.org.ogsadai.SQLQueryDQP
+END
+dataResourceClass=uk.org.ogsadai.resource.dataresource.dqp.DQPResource

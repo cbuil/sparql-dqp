@@ -1,0 +1,14 @@
+id=defaultDataset
+type=uk.org.ogsadai.DATA_RESOURCE
+creationTime=null
+terminationTime=null
+PROPERTIES
+END
+CONFIG
+rdf.resource.rdfdataurl=/media/OS/Proyectos/epcc/trunk/extensions/rdf/server/resources/rdf/dairdf.ttl
+END
+ACTIVITIES
+es.upm.fi.dia.oeg.RDFDBQueryActivity=es.upm.fi.dia.oeg.RDFDBQueryActivity
+es.upm.fi.dia.oeg.EmptyRDFQueryActivity=es.upm.fi.dia.oeg.EmptyRDFQueryActivity
+END
+dataResourceClass=es.upm.fi.dia.oeg.ogsadai.rdfresource.RDFResource

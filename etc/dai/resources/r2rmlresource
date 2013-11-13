@@ -1,0 +1,15 @@
+id=r2rmlresource
+type=uk.org.ogsadai.DATA_RESOURCE
+creationTime=null
+terminationTime=null
+PROPERTIES
+END
+CONFIG
+dai.r2rml.path=/media/OS/Proyectos/sparqldqp-fusion-tables-dqp/resparqldqpfusiontablesr2rml/
+dai.r2rml.file=worldgdp.r2rml.properties
+dai.r2rml.url=worldgdp.sparql
+END
+ACTIVITIES
+cl.puc.ing.dcc.db.ogsadai.fusiontables.FusionTableQueryActivity=cl.puc.ing.dcc.db.ogsadai.fusiontables.FusionTableQueryActivity
+END
+dataResourceClass=cl.puc.ing.dcc.db.ogsadai.fusiontables.server.FusionTableResource

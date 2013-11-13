@@ -1,0 +1,13 @@
+id=uk.org.ogsadai.STRING_RESOURCE_TEMPLATE
+type=uk.org.ogsadai.DATA_RESOURCE
+creationTime=null
+terminationTime=null
+PROPERTIES
+END
+CONFIG
+http://dai.string=THE_STRING
+END
+ACTIVITIES
+uk.org.ogsadai.ReadString=uk.org.ogsadai.ReadString
+END
+dataResourceClass=uk.org.ogsadai.resource.dataresource.string.StringResource

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+       
+  <import resource="../DQPCompilerConfiguration.xml"/>     
+   
+  <!-- ***********************
+        DQP Federation 
+       *********************** -->
+
+  <!--
+     Feature support helper - default can be configured here
+     or replace with another implementation class.
+   -->
+  <bean id="defaultFeatureSupport" 
+        class="uk.org.ogsadai.dqp.presentation.common.DefaultFeatureSupportHelper">
+  </bean>
+  
+  <!--
+       This specifies the DQP federation. 
+  -->
+  <bean id="federation"
+        class="es.upm.fi.dia.oeg.ogsadai.sparql.federation.SimpleRDFDQPFederation">
+        <property name="configuration">
+            <bean class="uk.org.ogsadai.dqp.presentation.common.SimpleDQPConfiguration"
+                  init-method="validate">
+                <property name="dataNodes">
+                    <list>
+                        <bean class="uk.org.ogsadai.dqp.presentation.common.SimpleDataNode">
+                            <constructor-arg name="resourceID" value="defaultDataset"/>
+                            <constructor-arg name="alias" value="defaultDataset"/>
+                            <constructor-arg name="evaluationNode" ref="EvalNode1"/>
+                        </bean>
+                    </list>
+                </property>
+                
+                <property name="evaluationNodes">
+                    <list>
+                        <ref bean="EvalNode1"/>
+			<!--<ref bean="EvalNode2"/>-->
+                    </list>
+                </property>
+    
+			    <!-- Table schema fetcher - below is the default -->
+			    <!-- 
+			    <property name="tableSchemaFetcher">
+			        <bean class="uk.org.ogsadai.dqp.presentation.common.SimpleTableSchemaFetcher"/>
+			    </property>
+			    -->
+            
+            </bean>
+        </property>
+        <!-- Fetch physical schemas? Default is true -->
+        <property name="fetchPhysicalSchema" value="true"/>
+    
+  </bean>
+  
+  <bean id="EvalNode1"
+      class="uk.org.ogsadai.dqp.presentation.jersey.JerseyEvaluationNode">
+   <constructor-arg name="url" value="http://localhost:8080/dai/services"/>
+   <constructor-arg name="drerID" value="DataRequestExecutionResource"/>
+   <constructor-arg name="dsos" value="dataSources"/>
+   <constructor-arg name="dsis" value="dataSinks"/>
+   <constructor-arg name="isLocal" type="boolean" value="true"/>
+</bean>
+
+<bean id="EvalNode2"
+      class="uk.org.ogsadai.dqp.presentation.jersey.JerseyEvaluationNode">
+   <constructor-arg name="url" value="http://localhost:8081/dai/services"/>
+   <constructor-arg name="drerID" value="DataRequestExecutionResource"/>
+   <constructor-arg name="dsos" value="dataSources"/>
+   <constructor-arg name="dsis" value="dataSinks"/>
+   <constructor-arg name="isLocal" type="boolean" value="true"/>
+</bean>
+  
+</beans>

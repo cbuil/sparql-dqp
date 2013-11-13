@@ -1,0 +1,14 @@
+id=uk.org.ogsadai.REMOTE_RESOURCE_TEMPLATE
+type=uk.org.ogsadai.DATA_RESOURCE
+creationTime=null
+terminationTime=null
+PROPERTIES
+END
+CONFIG
+dai.data.resource.uri=REMOTE-RESOURCE-URL
+dai.data.resource.id=REMOTE-RESOURCE-ID
+END
+ACTIVITIES
+uk.org.ogsadai.SQLQuery=uk.org.ogsadai.RemoteAsynchSQLQuery
+END
+dataResourceClass=uk.org.ogsadai.resource.dataresource.remote.RemoteResource

@@ -1,0 +1,12 @@
+id=uk.org.ogsadai.SESSION_RESOURCE
+type=uk.org.ogsadai.SESSION_RESOURCE
+creationTime=null
+terminationTime=null
+PROPERTIES
+END
+CONFIG
+END
+ACTIVITIES
+uk.org.ogsadai.ObtainFromSession=uk.org.ogsadai.ObtainFromSession
+uk.org.ogsadai.DeliverToSession=uk.org.ogsadai.DeliverToSession
+END

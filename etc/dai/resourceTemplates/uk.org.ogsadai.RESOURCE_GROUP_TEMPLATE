@@ -1,0 +1,11 @@
+id=uk.org.ogsadai.RESOURCE_GROUP_TEMPLATE
+type=uk.org.ogsadai.DATA_RESOURCE
+creationTime=null
+terminationTime=null
+PROPERTIES
+END
+CONFIG
+END
+ACTIVITIES
+END
+dataResourceClass=uk.org.ogsadai.resource.dataresource.group.ResourceGroupDataResource

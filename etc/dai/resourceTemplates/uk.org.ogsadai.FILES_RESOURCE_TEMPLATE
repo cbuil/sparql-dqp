@@ -1,0 +1,14 @@
+id=uk.org.ogsadai.FILES_RESOURCE_TEMPLATE
+type=uk.org.ogsadai.DATA_RESOURCE
+creationTime=null
+terminationTime=null
+PROPERTIES
+END
+CONFIG
+dai.data.resource.path=PATH
+END
+ACTIVITIES
+uk.org.ogsadai.ReadFromFile=uk.org.ogsadai.ReadFromFile
+uk.org.ogsadai.ListDirectory=uk.org.ogsadai.ListDirectory
+END
+dataResourceClass=uk.org.ogsadai.resource.dataresource.file.FileDataResource
