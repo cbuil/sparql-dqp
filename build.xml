@@ -127,7 +127,7 @@
 		</copy>
 		<!-- copy OGSA/SPARQL-DQP configuration files -->
 		<echo>Copying OGSA/SPARQL-DQP configuration files ${dai_dir} to ${env.CATALINA_HOME}/webapps/dai/WEB-INF/etc/$</echo>
-		<copy todir="${env.CATALINA_HOME}/webapps/dai/WEB-INF/etc/">
+		<copy todir="${env.CATALINA_HOME}/webapps/dai/WEB-INF/etc/dai/">
 			<fileset dir="${dai_dir}/" includes="**/*.*" />
 		</copy>
 	</target>
