@@ -1,5 +1,8 @@
 <project name="SPARQL-DQP 1.1" default="make-sparqldqp" xmlns:ivy="antlib:org.apache.ivy.ant">
 
+	<!-- property environment -->
+	<property environment="env" />
+
 	<!-- property files -->
 	<property file="build.properties" />
 
@@ -51,10 +54,10 @@
 	<target name="antlr">
 		<java classname="org.antlr.Tool" fork="true" failonerror="true">
 			<classpath refid="project.classpath" />
-			<arg value="-verbose"/>
-			<arg value="-make"/>
-			<arg value="-o"/>
-			<arg path="${grammar_src_dst}"/>
+			<arg value="-verbose" />
+			<arg value="-make" />
+			<arg value="-o" />
+			<arg path="${grammar_src_dst}" />
 			<arg path="grammar/${grammar_name}" />
 		</java>
 	</target>
@@ -121,6 +124,11 @@
 			<fileset dir="${build}">
 				<include name="**/*.jar" />
 			</fileset>
+		</copy>
+		<!-- copy OGSA/SPARQL-DQP configuration files -->
+		<echo>Copying OGSA/SPARQL-DQP configuration files ${dai_dir} to ${env.CATALINA_HOME}/webapps/dai/WEB-INF/etc/$</echo>
+		<copy todir="${env.CATALINA_HOME}/webapps/dai/WEB-INF/etc/">
+			<fileset dir="${dai_dir}/" includes="**/*.*" />
 		</copy>
 	</target>
 
