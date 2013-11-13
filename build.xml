@@ -10,7 +10,7 @@
 
 	<!-- CLASSPATH -->
 	<path id="project.classpath">
-		<fileset dir="${ogsadai_libs}">
+		<fileset dir="${env.OGSADAI_HOME}/${ogsadai_libs}">
 			<include name="**/*.jar" />
 		</fileset>
 		<fileset dir="${lib}">
